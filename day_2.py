@@ -46,7 +46,7 @@ class Submarine:
         self.aim += step
 
     @property
-    def get_result(self):
+    def result(self):
         """ Return the solution for Part1 and Part2 """
         return self.depth * self.horizontal
 
@@ -63,7 +63,7 @@ def main():
             move, step = instr.split(' ')
             submarine_1.methods[move](int(step))
 
-    print(submarine_1.get_result)
+    print(submarine_1.result)
 
     submarine_2 = Submarine()
 
@@ -72,7 +72,7 @@ def main():
             move, step = instr.split(' ')
             submarine_2.methods[move + "_aim"](int(step))
 
-    print(submarine_2.get_result)
+    print(submarine_2.result)
 
 
 if __name__ == "__main__":
