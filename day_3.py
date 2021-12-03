@@ -89,7 +89,7 @@ class Submarine:
 
         most_common = self.split_pd.value_counts(subset=[column])
 
-        # if equal counts, return 1
+        # if equal counts, return 0 or 1 depending what is asked
         if most_common.iloc[0] == most_common.iloc[1]:
             return keep
 
