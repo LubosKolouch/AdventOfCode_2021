@@ -32,7 +32,8 @@ class Crabs:
             fuel = 0
             for j in self.in_list:
                 distance = abs(j - i)
-                fuel += sum(range(1, distance + 1))
+                # REFACTORED: fuel += sum(range(1, distance + 1))
+                fuel += (distance * (distance + 1)) // 2
             if fuel < min_dist:
                 min_dist = fuel
 
