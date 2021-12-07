@@ -29,7 +29,6 @@ class Crabs:
 
         min_dist = 999999999
         for i in range(min(self.in_list), max(self.in_list) + 1):
-            distance = 0
             fuel = 0
             for j in self.in_list:
                 distance = abs(j - i)
