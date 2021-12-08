@@ -114,7 +114,7 @@ class Segments:
         return result
 
 
-def test_part_1():
+def test_part_1_2():
     """ Test the solution for day 1 """
     segments = Segments("input8_test")
 
