@@ -9,8 +9,6 @@ class Flash:
     """ Day 11 AoC """
     def __init__(self, in_file: str):
         self.map = np.genfromtxt(in_file, delimiter=1, dtype=int)
-        self.x_max = len(self.map)
-        self.y_max = len(self.map[0])
         self._flashed = {}
         self._flash_count = 0
         self.part1 = 0
@@ -37,7 +35,7 @@ class Flash:
             for pos in self._flashed:
                 self.map[pos] = 0
 
-            if len(self._flashed.keys()) == self.x_max * self.y_max:
+            if len(self._flashed.keys()) == self.map.size:
                 self.part2 = my_round
 
             if my_round == rounds:
@@ -54,8 +52,9 @@ class Flash:
 
         self._flashed[item] = 1
 
-        self.map[max(0, item[0] - 1):min(self.x_max, item[0] + 2),
-                 max(0, item[1] - 1):min(self.y_max, item[1] + 2)] += 1
+        self.map[max(0, item[0] - 1):min(np.shape(self.map)[0], item[0] + 2),
+                 max(0, item[1] - 1):min(np.shape(self.map)[1], item[1] +
+                                         2)] += 1
 
         self.map[item] = 0
 
