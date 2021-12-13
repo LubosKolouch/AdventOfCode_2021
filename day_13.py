@@ -29,8 +29,8 @@ class Folding:
     def print_grid(self):
         """ Print the grid """
 
-        for x in range(6):
-            for y in range(40):
+        for x in range(self.max_x):
+            for y in range(self.max_y):
                 if self.grid.get((x, y)):
                     print("█", end="")
                 else:
@@ -60,8 +60,8 @@ class Folding:
             if axis == "y":
                 self.max_x = count
 
-            if axis == "y":
-                self.max_x = count
+            if axis == "x":
+                self.max_y = count
 
             if part == 1:
                 return len(self.grid)
