@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 """ Advent of Code 2021 Day 14 """
 
-import re
-from collections import Counter, defaultdict
+from collections import defaultdict
 
 
 class Polymer:
