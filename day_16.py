@@ -47,6 +47,15 @@ class Packet:
         self.values = np.empty(0, dtype=int)
         self.sub_packets = []
 
+    def process_packet(self):
+        """ Process the packet """
+        next_packet = Packet(packet_str=self.packet, pos=self.pos)
+        next_packet.decode_packet()
+        self.values = np.append(self.values, next_packet.values)
+        self.version_sum += next_packet.version_sum
+        self.sub_packets.append(next_packet)
+        self.pos = next_packet.pos
+
     def decode_packet(self):
 
         try:
@@ -90,24 +99,13 @@ class Packet:
                 next_pos = self.pos + subpacket_length
 
                 while self.pos < next_pos:
-                    next_packet = Packet(packet_str=self.packet, pos=self.pos)
-                    next_packet.decode_packet()
-                    self.values = np.append(self.values, next_packet.values)
-                    self.version_sum += next_packet.version_sum
-                    self.sub_packets.append(next_packet)
-                    self.pos = next_packet.pos
+                    self.process_packet()
             else:
                 subpacket_count = int(self.packet[self.pos:self.pos + 11], 2)
                 self.pos += 11
 
                 for i in range(subpacket_count):
-                    next_packet = Packet(packet_str=self.packet, pos=self.pos)
-                    next_packet.decode_packet()
-                    self.values = np.append(self.values, next_packet.values)
-                    self.version_sum += next_packet.version_sum
-
-                    self.sub_packets.append(next_packet)
-                    self.pos = next_packet.pos
+                    self.process_packet()
 
         if packet_type == 0:
             self.values = np.sum(self.values)
