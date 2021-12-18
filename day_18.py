@@ -16,6 +16,55 @@ class AoC18:
         self.num = ""
         self.lines = lines
 
+    def explode(self, pos: int):
+        """ Explode if possible """
+        for two_digits in re.finditer(r"\d+,\d+", self.num[pos:]):
+            nums = two_digits.group().split(",")
+
+            str_before = self.num[:pos]
+            res_len = len(nums[0]) + len(nums[1]) + len("[,]")
+
+            str_after = self.num[pos + res_len:]
+
+            # add to number before if any
+            start = -1
+            for item in re.finditer(r"\d+", str_before):
+                new_num = int(nums[0]) + int(item.group())
+                start = item.start()
+                end = item.end()
+
+            if start != -1:
+                str_before = str_before[:start] + str(
+                    new_num) + str_before[end:]
+
+            # add to number after if any
+            start = -1
+            for item in re.finditer(r"\d+", str_after):
+
+                new_num = int(nums[1]) + int(item.group())
+                start = item.start()
+                end = item.end()
+                break
+
+            if start != -1:
+                str_after = str_after[:start] + str(new_num) + str_after[end:]
+
+            self.num = f"{str_before}0{str_after}"
+            return
+
+    def split_num(self):
+        """ Split digits > 10 """
+        for item in re.finditer(r"\d{2,}", self.num):
+
+            num_down = str(floor(int(item.group()) / 2))
+            num_up = str(ceil(int(item.group()) / 2))
+            self.num = self.num[:item.start(
+            )] + f"[{str(num_down)},{str(num_up)}]" + self.num[item.end():]
+
+            return 1
+
+        return 0
+
     def reduce_num(self):
         """ Do the reduction """
 
@@ -36,57 +85,13 @@ class AoC18:
                 # can explode?
                 if bracket_count == 5:
                     done_action = 1
-                    for item in re.finditer(r"\d+,\d+", self.num[pos:]):
-                        nums = item.group().split(",")
-
-                        str_before = self.num[:pos]
-                        res_len = len(nums[0]) + len(nums[1]) + len("[,]")
-
-                        str_after = self.num[pos + res_len:]
-
-                        # add to number before if any
-                        start = -1
-                        for item in re.finditer(r"\d+", str_before):
-                            new_num = int(nums[0]) + int(item.group())
-                            start = item.start()
-                            end = item.end()
-
-                        if start != -1:
-                            str_before = str_before[:start] + str(
-                                new_num) + str_before[end:]
-
-                        # add to number after if any
-                        start = -1
-                        for item in re.finditer(r"\d+", str_after):
-
-                            new_num = int(nums[1]) + int(item.group())
-                            start = item.start()
-                            end = item.end()
-                            break
-
-                        if start != -1:
-                            str_after = str_after[:start] + str(
-                                new_num) + str_after[end:]
-
-                        self.num = f"{str_before}0{str_after}"
-                        break
-
-                if done_action:
+                    self.explode(pos=pos)
                     break
 
             if done_action:
                 continue
 
-            # can split?
-            for item in re.finditer(r"\d{2,}", self.num):
-                done_action = 1
-
-                num_down = str(floor(int(item.group()) / 2))
-                num_up = str(ceil(int(item.group()) / 2))
-                self.num = self.num[:item.start(
-                )] + f"[{str(num_down)},{str(num_up)}]" + self.num[item.end():]
-
-                break
+            done_action = self.split_num()
 
     def calculate_magnitude(self):
         """ Do the recursive calc """
