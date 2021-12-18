@@ -123,15 +123,6 @@ class AoC18:
             self.num = "[" + self.num
             self.reduce_num()
 
-    def add_all(self):
-        """ Do the main task """
-
-        self.num = self.lines[0]
-        for line in self.lines[1:]:
-            self.num = self.num + f",{line}]"
-            self.num = "[" + self.num
-            self.reduce_num()
-
     def compute_pairs(self):
         """ Do the main task """
 
