@@ -14,7 +14,6 @@ class AoC18:
             lines = [line.strip() for line in my_in.readlines()]
 
         self.num = ""
-
         self.lines = lines
 
     def reduce_num(self):
@@ -24,7 +23,6 @@ class AoC18:
 
         while done_action:
             done_action = 0
-
             bracket_count = 0
 
             for pos, char in enumerate(self.num):
@@ -37,7 +35,6 @@ class AoC18:
 
                 # can explode?
                 if bracket_count == 5:
-                    # nested pair
                     done_action = 1
                     for item in re.finditer(r"\d+,\d+", self.num[pos:]):
                         nums = item.group().split(",")
@@ -47,8 +44,7 @@ class AoC18:
 
                         str_after = self.num[pos + res_len:]
 
-                        # add to list after
-
+                        # add to number before if any
                         start = -1
                         for item in re.finditer(r"\d+", str_before):
                             new_num = int(nums[0]) + int(item.group())
@@ -59,6 +55,7 @@ class AoC18:
                             str_before = str_before[:start] + str(
                                 new_num) + str_before[end:]
 
+                        # add to number after if any
                         start = -1
                         for item in re.finditer(r"\d+", str_after):
 
@@ -108,7 +105,6 @@ class AoC18:
                 self.num = self.num[:item.start() -
                                     1] + f"{result}" + self.num[item.end() +
                                                                 1:]
-
                 break
 
         return int(self.num)
